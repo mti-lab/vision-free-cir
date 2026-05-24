@@ -1,0 +1,31 @@
+# Val Evaluation Configuration - FashionIQ Toptee
+# Ablation row 1: Dense retrieval only (no attribute matching, no reranking)
+
+# Experiment Configuration
+exp_name: "fashioniq_toptee_val_dense"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "toptee"
+split: "val"  # Full validation set (no sampling)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Retrieval Configuration
+# alpha=1.0 means 100% dense retrieval (attribute_weights are unused)
+alpha: 1.0
+attribute_weights:
+  color: 0.25
+  sleeve_length: 0.25
+  pattern: 0.25
+  neckline: 0.25
+
+# Reranking Configuration
+enable_reranking: false
+reranking_top_k: 50
+reranking_model: "gpt-4.1"

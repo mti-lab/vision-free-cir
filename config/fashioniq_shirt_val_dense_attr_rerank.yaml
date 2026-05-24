@@ -1,0 +1,32 @@
+# Val Evaluation Configuration - FashionIQ Shirt
+# Ablation row 4: Dense retrieval + attribute matching + LLM reranking (full pipeline)
+# Optimal hyperparameters from grid search on train (R@10 basis)
+
+# Experiment Configuration
+exp_name: "fashioniq_shirt_val_dense_attr_rerank"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "shirt"
+split: "val"  # Full validation set (no sampling)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Retrieval Configuration
+# Optimal: alpha=0.8, pattern_focus
+alpha: 0.8
+attribute_weights:
+  shirt_color: 0.2
+  graphic_content: 0.2
+  sleeve_length: 0.2
+  pattern: 0.4
+
+# Reranking Configuration
+enable_reranking: true
+reranking_top_k: 50
+reranking_model: "gpt-4.1"

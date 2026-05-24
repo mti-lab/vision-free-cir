@@ -1,0 +1,80 @@
+# Grid Search Configuration - FashionIQ Dress (Train)
+
+# Experiment Configuration
+exp_name: "fashioniq_dress_grid_search"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "dress"
+split: "train"
+
+# Sampling Configuration
+num_sample_queries: 100  # Number of queries to sample from train
+num_sample_database_images: 1000  # Database size (includes query-related + random images)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Attribute Schema
+# Using schema from src/schema/fashioniq_dress.py
+# Attributes: color, dress_length, pattern, sleeve_style
+
+# Grid Search Parameters
+grid_search:
+  # Alpha: weight for dense retrieval (1-alpha for attribute)
+  # final_score = alpha * dense + (1-alpha) * attribute
+  alpha_values: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+
+  # Per-attribute weight combinations
+  # We'll search over uniform, emphasis on specific attributes, etc.
+  # Each attribute_weights is a dict like {"color": 0.25, "dress_length": 0.25, ...}
+  # Total should sum to 1.0 for interpretability
+
+  # Strategy: Start with a few representative configurations
+  # Later can expand to more exhaustive search
+  attribute_weight_configs:
+    - name: "uniform"
+      color: 0.25
+      dress_length: 0.25
+      pattern: 0.25
+      sleeve_style: 0.25
+
+    - name: "color_focus"
+      color: 0.4
+      dress_length: 0.2
+      pattern: 0.2
+      sleeve_style: 0.2
+
+    - name: "length_focus"
+      color: 0.2
+      dress_length: 0.4
+      pattern: 0.2
+      sleeve_style: 0.2
+
+    - name: "pattern_focus"
+      color: 0.2
+      dress_length: 0.2
+      pattern: 0.4
+      sleeve_style: 0.2
+
+    - name: "sleeve_focus"
+      color: 0.2
+      dress_length: 0.2
+      pattern: 0.2
+      sleeve_style: 0.4
+
+    - name: "color_sleeve"
+      color: 0.35
+      dress_length: 0.15
+      pattern: 0.15
+      sleeve_style: 0.35
+
+    - name: "color_length"
+      color: 0.35
+      dress_length: 0.35
+      pattern: 0.15
+      sleeve_style: 0.15

@@ -1,0 +1,76 @@
+# Grid Search Configuration - FashionIQ Shirt (Train)
+# Discover optimal hyperparameters using train split sampling
+
+# Experiment Configuration
+exp_name: "fashioniq_shirt_grid_search"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "shirt"
+split: "train"
+
+# Sampling Configuration
+num_sample_queries: 100  # Number of queries to sample from train
+num_sample_database_images: 1000  # Database size (includes query-related + random images)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Attribute Schema
+# Using schema from src/schema/fashioniq_shirt.py
+# Attributes: shirt_color, graphic_content, sleeve_length, pattern
+
+# Grid Search Parameters
+grid_search:
+  # Alpha: weight for dense retrieval (1-alpha for attribute)
+  # final_score = alpha * dense + (1-alpha) * attribute
+  alpha_values: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+
+  # Per-attribute weight combinations
+  # Total should sum to 1.0 for interpretability
+  attribute_weight_configs:
+    - name: "uniform"
+      shirt_color: 0.25
+      graphic_content: 0.25
+      sleeve_length: 0.25
+      pattern: 0.25
+
+    - name: "color_focus"
+      shirt_color: 0.4
+      graphic_content: 0.2
+      sleeve_length: 0.2
+      pattern: 0.2
+
+    - name: "graphic_focus"
+      shirt_color: 0.2
+      graphic_content: 0.4
+      sleeve_length: 0.2
+      pattern: 0.2
+
+    - name: "color_graphic"
+      shirt_color: 0.35
+      graphic_content: 0.35
+      sleeve_length: 0.15
+      pattern: 0.15
+
+    - name: "pattern_focus"
+      shirt_color: 0.2
+      graphic_content: 0.2
+      sleeve_length: 0.2
+      pattern: 0.4
+
+    - name: "sleeve_focus"
+      shirt_color: 0.2
+      graphic_content: 0.2
+      sleeve_length: 0.4
+      pattern: 0.2
+
+    - name: "color_pattern"
+      shirt_color: 0.35
+      graphic_content: 0.15
+      sleeve_length: 0.15
+      pattern: 0.35

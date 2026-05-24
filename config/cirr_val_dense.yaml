@@ -1,0 +1,30 @@
+# Val Evaluation Configuration - CIRR
+# Ablation row 1: Dense retrieval only (no attribute matching, no reranking)
+
+# Experiment Configuration
+exp_name: "cirr_val_dense"
+
+# Dataset Configuration
+dataset: "cirr"
+split: "val"  # Full validation set (no sampling)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Retrieval Configuration
+# alpha=1.0 means 100% dense retrieval (attribute_weights are unused)
+alpha: 1.0
+attribute_weights:
+  background_type: 0.25
+  number_of_subjects: 0.25
+  color: 0.25
+  pose: 0.25
+
+# Reranking Configuration
+enable_reranking: false
+reranking_top_k: 50
+reranking_model: "gpt-4.1"

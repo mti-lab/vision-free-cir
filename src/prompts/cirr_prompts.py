@@ -1,0 +1,108 @@
+"""
+Prompts for CIRR dataset.
+
+Based on src/prompts.py with general image captioning.
+"""
+
+# System prompts
+CAPTION_SYSTEM_PROMPT = (
+    "You are an expert image captioner for real-life images used for text-embedding retrieval.\n"
+    "Describe the main objects and scene in the image accurately and concisely.\n"
+    'Do not output warnings, policy statements, or apologies. Never write "I\'m sorry" or any refusal.\n'
+    "Focus on describing what is visible: objects, their attributes, colors, positions, and relationships.\n"
+    "Follow the requested output format strictly."
+)
+
+ATTRIBUTE_EXTRACTION_SYSTEM_PROMPT = (
+    "You are an expert in computer vision and image analysis.\n"
+    "Your task is to extract specific attribute values from images based on predefined attributes."
+)
+
+# Caption generation prompts
+CAPTION_USER_PROMPT = "Describe this image in detail"
+
+# Attribute extraction prompt
+ATTRIBUTE_EXTRACTION_USER_PROMPT = """Analyze this image and extract values for the following attributes:
+
+{attributes}
+
+For each attribute, select the most appropriate value from the predefined list. Be precise and use only the provided values.
+
+Return your response as a JSON object with attribute names as keys and their observed values as values.
+IMPORTANT: Return ONLY the JSON object, without markdown code blocks or additional text."""
+
+# Caption modification prompt (for query processing)
+MODIFICATION_SYSTEM_PROMPT = (
+    "You are an expert at modifying image descriptions based on natural language instructions."
+)
+
+MODIFICATION_USER_PROMPT = """Given the original caption and modification instruction, generate a modified caption that reflects the requested changes.
+
+Original caption: {caption}
+Modification instruction: {instruction}
+
+Generate a modified caption that incorporates the changes described in the instruction while maintaining the descriptive style.
+Return ONLY the modified caption text."""
+
+# Combined modification + attribute extraction prompt (single LLM call)
+MODIFICATION_WITH_ATTRIBUTES_USER_PROMPT = """Given the original caption and modification instruction, generate a modified caption that reflects the requested changes.
+
+Original caption: {caption}
+Modification instruction: {instruction}
+
+Generate a modified caption that incorporates the changes described in the instruction while maintaining the descriptive style.
+
+Additionally, extract the attributes for the modified caption based on these attribute definitions:
+
+{attributes}
+
+Return your response as a JSON object with two keys:
+1. "modified_caption": The modified caption text
+2. "attributes": A dict mapping attribute names to their values
+
+IMPORTANT: Return ONLY the JSON object, without markdown code blocks or additional text."""
+
+# Reranking prompts (LLM-based candidate reranking)
+RERANKING_SYSTEM_PROMPT = """You are an expert at evaluating general image search results for Composed Image Retrieval (CIR).
+
+In CIR, a user has a reference image and provides a text instruction describing desired changes.
+Your task is to score how well each candidate image matches what the user is looking for.
+
+Focus on key visual attributes:
+- Objects and subjects (people, animals, vehicles, etc.)
+- Actions and poses
+- Background and scene setting
+- Colors and visual appearance
+- Number of subjects
+- Overall composition
+
+IMPORTANT: Output ONLY a JSON object with scores. No explanations, no comments, no additional text."""
+
+RERANKING_USER_PROMPT = """Reference image:
+{reference_caption}
+
+User's desired change:
+{instruction}
+
+Candidates (descriptions of images in database):
+{candidates}
+
+Score each candidate from 1-10 based on how well it matches the user's desired change applied to the reference:
+- 10: Perfect match (all requested changes are present)
+- 7-9: Strong match (most key attributes match)
+- 4-6: Partial match (some attributes match)
+- 1-3: Poor match (few or no attributes match)
+
+Pay special attention to:
+1. Explicit changes mentioned in the instruction (objects, actions, background, etc.)
+2. Overall scene composition and context
+3. Visual similarity to what the user is looking for
+
+Output ONLY this JSON format, nothing else:
+{{
+  "scores": {{
+    "1": <score_for_candidate_1>,
+    "2": <score_for_candidate_2>,
+    ...
+  }}
+}}"""

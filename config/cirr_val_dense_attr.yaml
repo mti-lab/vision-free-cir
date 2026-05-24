@@ -1,0 +1,31 @@
+# Val Evaluation Configuration - CIRR
+# Ablation row 2: Dense retrieval + attribute matching (no reranking)
+# Optimal hyperparameters from grid search on train (R@5 basis)
+
+# Experiment Configuration
+exp_name: "cirr_val_dense_attr"
+
+# Dataset Configuration
+dataset: "cirr"
+split: "val"  # Full validation set (no sampling)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Retrieval Configuration
+# Optimal: alpha=0.8, no_background
+alpha: 0.8
+attribute_weights:
+  background_type: 0.10
+  number_of_subjects: 0.30
+  color: 0.30
+  pose: 0.30
+
+# Reranking Configuration
+enable_reranking: false
+reranking_top_k: 50
+reranking_model: "gpt-4.1"

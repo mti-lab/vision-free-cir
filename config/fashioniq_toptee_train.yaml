@@ -1,0 +1,76 @@
+# Grid Search Configuration - FashionIQ Toptee (Train)
+# Discover optimal hyperparameters using train split sampling
+
+# Experiment Configuration
+exp_name: "fashioniq_toptee_grid_search"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "toptee"
+split: "train"
+
+# Sampling Configuration
+num_sample_queries: 100  # Number of queries to sample from train
+num_sample_database_images: 1000  # Database size (includes query-related + random images)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Attribute Schema
+# Using schema from src/schema/fashioniq_toptee.py
+# Attributes: color, sleeve_length, pattern, neckline
+
+# Grid Search Parameters
+grid_search:
+  # Alpha: weight for dense retrieval (1-alpha for attribute)
+  # final_score = alpha * dense + (1-alpha) * attribute
+  alpha_values: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+
+  # Per-attribute weight combinations
+  # Total should sum to 1.0 for interpretability
+  attribute_weight_configs:
+    - name: "uniform"
+      color: 0.25
+      sleeve_length: 0.25
+      pattern: 0.25
+      neckline: 0.25
+
+    - name: "color_focus"
+      color: 0.4
+      sleeve_length: 0.2
+      pattern: 0.2
+      neckline: 0.2
+
+    - name: "pattern_focus"
+      color: 0.2
+      sleeve_length: 0.2
+      pattern: 0.4
+      neckline: 0.2
+
+    - name: "neckline_focus"
+      color: 0.2
+      sleeve_length: 0.2
+      pattern: 0.2
+      neckline: 0.4
+
+    - name: "sleeve_focus"
+      color: 0.2
+      sleeve_length: 0.4
+      pattern: 0.2
+      neckline: 0.2
+
+    - name: "color_pattern"
+      color: 0.35
+      sleeve_length: 0.15
+      pattern: 0.35
+      neckline: 0.15
+
+    - name: "color_neckline"
+      color: 0.35
+      sleeve_length: 0.15
+      pattern: 0.15
+      neckline: 0.35

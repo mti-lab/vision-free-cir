@@ -1,0 +1,14 @@
+[project]
+name = "vision-free-cir"
+version = "0.1.0"
+description = "Vision-Free Composed Image Retrieval via text-to-text matching"
+readme = "README.md"
+requires-python = "==3.13.*"
+dependencies = [
+    "numpy==2.3.4",
+    "omegaconf==2.3.0",
+    "openai==2.6.1",
+    "python-dotenv==1.2.1",
+    "requests>=2.32.0",
+    "tqdm>=4.67.0",
+]

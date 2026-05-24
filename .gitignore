@@ -1,0 +1,15 @@
+.env
+
+.venv/
+__pycache__/
+*.py[cod]
+
+discovered_attributes/
+precomputed/
+results/
+
+# Dataset symlinks (data lives in ~/Downloads/textCIR/)
+cirr
+fashion-iq
+fashion-iq-metadata
+images

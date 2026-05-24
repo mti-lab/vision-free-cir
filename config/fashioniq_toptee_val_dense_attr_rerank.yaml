@@ -1,0 +1,32 @@
+# Val Evaluation Configuration - FashionIQ Toptee
+# Ablation row 4: Dense retrieval + attribute matching + LLM reranking (full pipeline)
+# Optimal hyperparameters from grid search on train (R@10 basis)
+
+# Experiment Configuration
+exp_name: "fashioniq_toptee_val_dense_attr_rerank"
+
+# Dataset Configuration
+dataset: "fashioniq"
+category: "toptee"
+split: "val"  # Full validation set (no sampling)
+
+# Model Configuration
+openai_text_model: "gpt-4.1"
+openai_vision_model: "gpt-4.1"
+openai_embedding_model: "text-embedding-3-large"
+
+# Embedding Configuration
+
+# Retrieval Configuration
+# Optimal: alpha=0.6, uniform
+alpha: 0.6
+attribute_weights:
+  color: 0.25
+  sleeve_length: 0.25
+  pattern: 0.25
+  neckline: 0.25
+
+# Reranking Configuration
+enable_reranking: true
+reranking_top_k: 50
+reranking_model: "gpt-4.1"
